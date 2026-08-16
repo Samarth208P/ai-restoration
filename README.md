@@ -18,7 +18,15 @@ This repository contains the hackathon submission for the AI-Based Restoration o
    cd ai-restoration
    ```
 
-2. **Install dependencies:**
+2. **Clone the Restormer Architecture dependency:**
+   ```bash
+   git clone https://github.com/swz30/Restormer.git
+   cd Restormer
+   python setup.py develop --no_cuda_ext
+   cd ..
+   ```
+
+3. **Install other dependencies:**
    ```bash
    pip install -r requirements.txt
    ```
