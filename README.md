@@ -2,6 +2,11 @@
 
 This repository contains the hackathon submission for the AI-Based Restoration of Degraded Images challenge.
 
+## Results
+
+![Restormer Output Comparison](image.png)
+*Comparison: Noisy Image vs Restormer Output vs Ground Truth*
+
 ## Setup
 
 1. **Clone the repository:**
