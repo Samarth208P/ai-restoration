@@ -4,8 +4,11 @@ This repository contains the hackathon submission for the AI-Based Restoration o
 
 ## Results
 
-![Restormer Output Comparison](image.png)
-*Comparison: Noisy Image vs Restormer Output vs Ground Truth*
+![Restormer Output Comparison 1](image.png)
+*Comparison 1: Noisy Image vs Restormer Output vs Ground Truth*
+
+![Restormer Output Comparison 2](image2.png)
+*Comparison 2: Noisy Image vs Restormer Output vs Ground Truth*
 
 ## Setup
 
