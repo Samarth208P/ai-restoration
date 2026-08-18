@@ -146,7 +146,7 @@ def run(input_dir, output_dir, weights_path=DEFAULT_WEIGHTS_PATH):
         print(f"Warning: No .npy files found in '{input_dir}'.")
         return
 
-    print(f"Found {len(files)} .npy file(s) to process in '{input_dir}'.")
+    print(f"Processing {len(files)} file(s) from '{input_dir}'...")
     processed_count = 0
 
     for idx, filename in enumerate(files, 1):
@@ -158,14 +158,10 @@ def run(input_dir, output_dir, weights_path=DEFAULT_WEIGHTS_PATH):
             restored = restore_image(model, device, img_arr, TARGET_RESOLUTION)
             np.save(output_path, restored)
             processed_count += 1
-
-            if idx % 50 == 0 or idx == len(files):
-                print(f"[{idx}/{len(files)}] Processed {filename} -> shape {restored.shape}")
         except Exception as e:
             print(f"Error processing {filename}: {e}")
 
-    print(f"\nCompleted: {processed_count}/{len(files)} files successfully restored.")
-    print(f"Outputs saved to: {output_dir}")
+    print(f"Successfully processed and saved {processed_count}/{len(files)} file(s) to '{output_dir}'.")
 
 
 def main():
