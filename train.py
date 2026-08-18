@@ -8,14 +8,14 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch.utils.data import Dataset, DataLoader
 
-sys.path.insert(0, "./Restormer")
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+if SCRIPT_DIR not in sys.path:
+    sys.path.insert(0, SCRIPT_DIR)
+
 try:
-    from basicsr.models.archs.restormer_arch import Restormer
+    from models.Restormer.restormer_arch import Restormer
 except ImportError:
-    print("Error: Could not import Restormer. Please make sure you have run:")
-    print("git clone https://github.com/swz30/Restormer.git")
-    print("cd Restormer && python setup.py develop --no_cuda_ext")
-    sys.exit(1)
+    from models.Restormer.basicsr.models.archs.restormer_arch import Restormer
 
 class RestorationDataset(Dataset):
     def __init__(self, noisy_dir, gt_dir, files, augment=False):
@@ -173,8 +173,10 @@ def main():
 
         if val_loss < best_val_loss:
             best_val_loss = val_loss
+            os.makedirs("models", exist_ok=True)
+            torch.save(model.state_dict(), "models/best_restormer.pth")
             torch.save(model.state_dict(), "best_restormer.pth")
-            print("✅ Best model saved!")
+            print("✅ Best model saved to models/best_restormer.pth!")
         print("=" * 60)
 
 if __name__ == "__main__":

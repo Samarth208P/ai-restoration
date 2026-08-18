@@ -6,18 +6,28 @@ import torch
 import torch.nn.functional as F
 from PIL import Image
 
-sys.path.insert(0, "./Restormer")
-try:
-    from basicsr.models.archs.restormer_arch import Restormer
-except ImportError:
-    print("Error: Could not import Restormer. Please make sure you have run:")
-    print("git clone https://github.com/swz30/Restormer.git")
-    print("cd Restormer && python setup.py develop --no_cuda_ext")
-    sys.exit(1)
+# Add local model path
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+if SCRIPT_DIR not in sys.path:
+    sys.path.insert(0, SCRIPT_DIR)
 
-def load_model(weights_path):
+try:
+    from models.Restormer.restormer_arch import Restormer
+except ImportError:
+    from models.Restormer.basicsr.models.archs.restormer_arch import Restormer
+
+DEFAULT_WEIGHTS_PATH = os.path.join(SCRIPT_DIR, "models", "best_restormer.pth")
+
+def load_model(weights_path=DEFAULT_WEIGHTS_PATH):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Using device: {device}")
+    
+    if not os.path.exists(weights_path):
+        fallback = os.path.join(SCRIPT_DIR, "best_restormer.pth")
+        if os.path.exists(fallback):
+            weights_path = fallback
+        else:
+            raise FileNotFoundError(f"Model weights not found at {weights_path}")
     
     model = Restormer(
         inp_channels=1,
@@ -113,7 +123,7 @@ def main():
     parser = argparse.ArgumentParser(description="Evaluate Image Restoration Model")
     parser.add_argument("--input_dir", type=str, required=True, help="Path to directory containing test images")
     parser.add_argument("--output_dir", type=str, required=True, help="Path to directory to save restored images")
-    parser.add_argument("--weights", type=str, default="best_restormer.pth", help="Path to model weights")
+    parser.add_argument("--weights", type=str, default=DEFAULT_WEIGHTS_PATH, help="Path to model weights")
     
     args = parser.parse_args()
     
